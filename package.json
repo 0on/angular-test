@@ -1,0 +1,26 @@
+{
+  "name": "ljtest",
+  "version": "0.0.1",
+  "description": "test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0on/lj-test.git"
+  },
+  "author": "Andrey Vorontsov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/0on/lj-test/issues"
+  },
+  "homepage": "https://github.com/0on/lj-test#readme",
+  "devDependencies": {
+    "angular": "^1.4.3",
+    "angular-route": "^1.4.3",
+    "browserify": "^11.0.0",
+    "gulp": "^3.9.0",
+    "gulp-connect": "^2.2.0"
+  }
+}
