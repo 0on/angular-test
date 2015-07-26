@@ -1,5 +1,5 @@
-angular.module('comments')
-    .factory('localStorage', function () {
+angular.module('comments.service', [])
+    .factory('LocalStorage', function () {
         "use strict";
         var ID = "comments-local-storage";
         var store = {
@@ -13,6 +13,5 @@ angular.module('comments')
             }
 
         };
-
         return store;
     });

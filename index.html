@@ -2,9 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Comments</title>
+    <script type="application/javascript" src="./js/vendor/angular.js"></script>
+    <script type="application/javascript" src="./js/service/store.js"></script>
+    <script type="application/javascript" src="./js/controller/commentsController.js"></script>
+    <link rel="stylesheet" href="./css/vendor/bootstrap.css">
 </head>
-<body>
+<body ng-app="comments" style="padding: 40px;">
 
+<script type="text/ng-template" id="tree_item_renderer.html">
+    <div>
+        <div class="panel panel-default" ng-show="!comment.editable">
+            <div class="panel-heading">{{comment.author}}</div>
+            <div class="panel-body">{{comment.text}}</div>
+            <div>{{comment.date | date:'HH:mm dd.MM.yy'}}</div>
+            <div>
+                <a ng-click="comment.editable = true">Редактировать</a>
+                <a ng-click="reply(comment)">Ответить</a>
+            </div>
+        </div>
+
+        <div class="panel panel-default form-horizontal" ng-show="comment.editable">
+            <label for="edit_author">Автор</label>
+            <input id="edit_author" class="form-control" type="text" ng-model="comment.author" placeholder="Ваше имя..."/>
+            <label for="edit_text">Комментарий</label>
+            <textarea id="edit_text" class="form-control" rows="3" ng-model="comment.text" placeholder="Введите комментарий..."></textarea>
+            <button class="btn btn-success" ng-click="saveComment($parent, comment, $index)">Сохранить</button>
+            <button class="btn btn-danger" ng-click="cancelEditing();">Отмена</button>
+        </div>
+    </div>
+
+    <div style="margin-left: 20px;" ng-repeat="comment in comment.replies" ng-include="'tree_item_renderer.html'"></div>
+</script>
+
+<div ng-controller="CommentsCtrl as commentsCtrl">
+
+    <div ng-repeat="comment in comments" ng-include="'tree_item_renderer.html'"></div>
+
+    <div class="panel panel-default form-horizontal" ng-show="!!activeComment">
+        <label for="new_author">Автор</label>
+        <input id="new_author" class="form-control" type="text" ng-model="activeComment.author" placeholder="Ваше имя..."/>
+        <label for="new_text">Комментарий</label>
+        <textarea id="new_text" class="form-control" rows="3" ng-model="activeComment.text" placeholder="Введите комментарий..."></textarea>
+        <button class="btn btn-success" ng-click="saveNewComment()">Сохранить</button>
+        <button class="btn btn-danger" ng-click="cancelAdding()">Отмена</button>
+    </div>
+
+    <button class="btn btn-primary" ng-click="addComment()">Комментировать</button>
+
+    <!-- todo: change angular dependensies to browserify -->
+    <!-- todo: delete branch -->
+    <!-- todo: collapse branch -->
+
+    <a ng-click="comments = []; localStorage.clear()">Clean localStorage and inner</a>
+</div>
 </body>
 </html>
