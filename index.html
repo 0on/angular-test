@@ -18,6 +18,7 @@
             <div>{{comment.date | date:'HH:mm dd.MM.yy'}}</div>
             <div>
                 <a ng-click="comment.editable = true">Редактировать</a>
+                <a ng-click="deleteComment($parent, $index)">Удалить</a>
                 <a ng-click="reply(comment)">Ответить</a>
             </div>
         </div>
@@ -51,8 +52,8 @@
     <button class="btn btn-primary" ng-click="addComment()">Комментировать</button>
 
     <!-- todo: change angular dependensies to browserify -->
-    <!-- todo: delete branch -->
-    <!-- todo: collapse branch -->
+    <!-- todo: collapse branch & collapsed count -->
+    <!-- todo: edited mark-->
 
     <a ng-click="comments = []; localStorage.clear()">Clean localStorage and inner</a>
 </div>

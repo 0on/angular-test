@@ -47,6 +47,11 @@ angular.module('comments', ['comments.service'])
             }
         };
 
+        $scope.deleteComment = function (parent, index) {
+            var replies = parent.$parent.comment ? parent.$parent.comment.replies : $scope.comments;
+            replies.splice(index, 1);
+        }
+
     }]);
 
 var Comment = function (text, author, editable) {
