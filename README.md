@@ -3,7 +3,8 @@
 $ npm install
 $ gulp
 ```
-
-todo: collapse branch & collapsed count
-todo: edited mark
-todo: tests
+todo:
+1) collapse branch & collapsed count
+2) edited mark
+3) tests
+4) empty field validation
