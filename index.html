@@ -40,7 +40,7 @@
 
     <div ng-repeat="comment in comments" ng-include="'tree_item_renderer.html'"></div>
 
-    <div class="panel panel-default form-horizontal" ng-show="!!activeComment">
+    <div class="panel panel-default form-horizontal" ng-show="!!activeComment" ng-cloak>
         <label for="new_author">Автор</label>
         <input id="new_author" class="form-control" type="text" ng-model="activeComment.author" placeholder="Ваше имя..."/>
         <label for="new_text">Комментарий</label>
@@ -50,11 +50,6 @@
     </div>
 
     <button class="btn btn-primary" ng-click="addComment()">Комментировать</button>
-
-    <!-- todo: change angular dependensies to browserify -->
-    <!-- todo: collapse branch & collapsed count -->
-    <!-- todo: edited mark-->
-    <!-- todo: don't put to local unsaved changes-->
 
     <a ng-click="comments = []; localStorage.clear()">Clean localStorage and inner</a>
 </div>

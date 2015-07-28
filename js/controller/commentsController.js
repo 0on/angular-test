@@ -8,6 +8,7 @@ angular.module('comments', ['comments.service'])
             commentBackUp;
 
         $window.addEventListener('beforeunload', function () {
+            $scope.cancelEditing();
             LocalStorage.save($scope.comments);
         });
 
@@ -20,7 +21,6 @@ angular.module('comments', ['comments.service'])
             comment.editable = false;
             comment.date = new Date();
             commentsLevel[index] = comment;
-            //$scope.cancelEditing();
         };
 
         $scope.saveNewComment = function () {
@@ -50,26 +50,36 @@ angular.module('comments', ['comments.service'])
         };
 
         $scope.deleteComment = function (parent, index) {
-            var replies = parent.$parent.comment ? parent.$parent.comment.replies : $scope.comments;
-            replies.splice(index, 1);
+            if (confirm('Вы уверены, что хотите удалить комментарий?')) {
+                var replies = parent.$parent.comment ? parent.$parent.comment.replies : $scope.comments;
+                replies.splice(index, 1);
+            }
         };
 
         $scope.edit = function (comment, parent) {
+            $scope.cancelAdding();
             commentBackUp = {
                 indexes: parseIndexes(parent),
-                comment: angular.extend({}, comment) 
+                comment: angular.extend({}, comment)
             };
             comment.editable = true;
         };
 
         function restore() {
-            var indexes = commentBackUp.indexes,
-                replies = $scope.comments[indexes[0]].replies,
-                length = indexes.length - 1;
-            for (var i = 1; i < length; i++) {
-                replies = replies[indexes[i]].replies;
+            if (commentBackUp) {
+                var indexes = commentBackUp.indexes,
+                    replies = $scope.comments[indexes[0]].replies,
+                    length = indexes.length - 1;
+                if (length === 0) {
+                    $scope.comments[commentBackUp.indexes[0]] = commentBackUp.comment;
+                } else {
+                    for (var i = 1; i < length; i++) {
+                        replies = replies[indexes[i]].replies;
+                    }
+                    replies[indexes[length]] = commentBackUp.comment;
+                }
+                commentBackUp = null;
             }
-            replies[indexes[length]] = commentBackUp.comment;
         }
 
         function parseIndexes(parent) {
