@@ -17,7 +17,7 @@
             <div class="panel-body">{{comment.text}}</div>
             <div>{{comment.date | date:'HH:mm dd.MM.yy'}}</div>
             <div>
-                <a ng-click="edit(comment, $parent, $index)">Редактировать</a>
+                <a ng-click="edit(comment, $parent)">Редактировать</a>
                 <a ng-click="deleteComment($parent, $index)">Удалить</a>
                 <a ng-click="reply(comment)">Ответить</a>
             </div>

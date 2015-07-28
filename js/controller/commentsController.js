@@ -4,7 +4,8 @@ angular.module('comments', ['comments.service'])
         $scope.comments = LocalStorage.load() || [];
         $scope.activeComment = null;
 
-        var commentForAdding;
+        var commentForAdding,
+            commentBackUp;
 
         $window.addEventListener('beforeunload', function () {
             LocalStorage.save($scope.comments);
@@ -19,7 +20,7 @@ angular.module('comments', ['comments.service'])
             comment.editable = false;
             comment.date = new Date();
             commentsLevel[index] = comment;
-            $scope.cancelEditing();
+            //$scope.cancelEditing();
         };
 
         $scope.saveNewComment = function () {
@@ -45,11 +46,41 @@ angular.module('comments', ['comments.service'])
                 commentForAdding.replies.pop();
 
             }
+            restore();
         };
 
         $scope.deleteComment = function (parent, index) {
             var replies = parent.$parent.comment ? parent.$parent.comment.replies : $scope.comments;
             replies.splice(index, 1);
+        };
+
+        $scope.edit = function (comment, parent) {
+            commentBackUp = {
+                indexes: parseIndexes(parent),
+                comment: angular.extend({}, comment) 
+            };
+            comment.editable = true;
+        };
+
+        function restore() {
+            var indexes = commentBackUp.indexes,
+                replies = $scope.comments[indexes[0]].replies,
+                length = indexes.length - 1;
+            for (var i = 1; i < length; i++) {
+                replies = replies[indexes[i]].replies;
+            }
+            replies[indexes[length]] = commentBackUp.comment;
+        }
+
+        function parseIndexes(parent) {
+            var indexes = [];
+            while (parent) {
+                if (parent.hasOwnProperty('comment')) {
+                    indexes.unshift(parent.$index);
+                }
+                parent = parent.$parent;
+            }
+            return indexes;
         }
 
     }]);
